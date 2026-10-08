@@ -20,6 +20,7 @@ test.describe('Navigation and Content', () => {
     expect(post.published).toBe('12 Mar');
 
     if (post.linked) {
+
       await contentPage.openFirstPost();
       expect(await contentPage.getCurrentPageText()).toContain('First Post');
     } else {
@@ -31,5 +32,6 @@ test.describe('Navigation and Content', () => {
     expect(feed.url).toContain('/blogs/news.atom');
     expect(feed.body).toContain('<feed');
     expect(feed.body).toContain('<title>First Post</title>');
+    
   });
 });
