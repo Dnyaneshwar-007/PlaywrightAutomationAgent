@@ -15,14 +15,17 @@ export class CatalogPage {
   }
 
   async openFromHome(): Promise<void> {
-    await this.page.goto('/collections/all', { waitUntil: 'commit', timeout: 60000 });
+    await this.page.goto('/collections/all', { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await this.page.getByRole('heading', { name: 'Products', exact: true }).waitFor({ state: 'visible' });
+    await this.productCards.first().waitFor({ state: 'visible' });
   }
 
   async isCatalogHeadingVisible(): Promise<boolean> {
-    return this.page.url().includes('/collections/all') || (await this.page.locator('body').count()) > 0;
+    return this.page.getByRole('heading', { name: 'Products', exact: true }).isVisible();
   }
 
   async getInventory(): Promise<CatalogProduct[]> {
+    await this.productCards.first().waitFor({ state: 'visible' });
     const products: CatalogProduct[] = [];
 
     for (const card of await this.productCards.all()) {
